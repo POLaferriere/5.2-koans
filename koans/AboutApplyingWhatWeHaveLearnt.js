@@ -6,11 +6,26 @@ describe("About Applying What We Have Learnt", function() {
 
   beforeEach(function () {
     products = [
-       { name: "Sonoma", ingredients: ["artichoke", "sundried tomatoes", "mushrooms"], containsNuts: false },
-       { name: "Pizza Primavera", ingredients: ["roma", "sundried tomatoes", "goats cheese", "rosemary"], containsNuts: false },
-       { name: "South Of The Border", ingredients: ["black beans", "jalapenos", "mushrooms"], containsNuts: false },
-       { name: "Blue Moon", ingredients: ["blue cheese", "garlic", "walnuts"], containsNuts: true },
-       { name: "Taste Of Athens", ingredients: ["spinach", "kalamata olives", "sesame seeds"], containsNuts: true }
+       {
+         name: "Sonoma",
+         ingredients: ["artichoke", "sundried tomatoes", "mushrooms"],
+         containsNuts: false },
+       {
+         name: "Pizza Primavera",
+         ingredients: ["roma", "sundried tomatoes", "goats cheese", "rosemary"],
+         containsNuts: false },
+       {
+         name: "South Of The Border",
+         ingredients: ["black beans", "jalapenos", "mushrooms"],
+         containsNuts: false },
+       {
+         name: "Blue Moon",
+         ingredients: ["blue cheese", "garlic", "walnuts"],
+         containsNuts: true },
+       {
+         name: "Taste Of Athens",
+         ingredients: ["spinach", "kalamata olives", "sesame seeds"],
+         containsNuts: true }
     ];
   });
 
@@ -32,16 +47,26 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(productsICanEat.length).toBe(FILL_ME_IN);
+    expect(productsICanEat.length).toBe(1);
   });
 
   it("given I'm allergic to nuts and hate mushrooms, it should find a pizza I can eat (functional)", function () {
 
       var productsICanEat = [];
 
+      var doesntHaveNuts = _.filter(products, function(obj){return !obj.containsNuts;});
+
+      var isMushroom = function(el) { return el === "mushrooms";};
+
+      _.each(doesntHaveNuts, function(obj) {
+        if (!_.any(obj.ingredients, isMushroom)){
+          productsICanEat.push(obj);
+        }
+      });
+
       /* solve using filter() & all() / any() */
 
-      expect(productsICanEat.length).toBe(FILL_ME_IN);
+      expect(productsICanEat.length).toBe(1);
   });
 
   /*********************************************************************************/
@@ -55,14 +80,23 @@ describe("About Applying What We Have Learnt", function() {
       }
     }
 
-    expect(sum).toBe(FILL_ME_IN);
+    expect(sum).toBe(233168);
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
+    var sum = _(_.range(1, 1000)).chain()
+      .reduce(function(last, current) {
+        if (current % 3 === 0 || current % 5 === 0) {
+          return last + current;
+        } else {
+          return last;
+        }
+      }, 0)
+    .value();
 
-    var sum = FILL_ME_IN;    /* try chaining range() and reduce() */
+    /* try chaining range() and reduce() */
 
-    expect(233168).toBe(FILL_ME_IN);
+    expect(233168).toBe(sum);
   });
 
   /*********************************************************************************/
@@ -75,15 +109,32 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   it("should count the ingredient occurrence (functional)", function () {
     var ingredientCount = { "{ingredient name}": 0 };
 
+    _(_.map(products, function(obj){
+      return obj.ingredients;
+    })).chain()
+      .flatten()
+      .reduce(function(obj, ingredient) {
+        if (ingredient in obj) {
+          var i = obj[ingredient];
+          i++;
+          obj[ingredient] = i;
+        } else {
+          obj[ingredient] = 1;
+        }
+        return ingredientCount;
+      }, ingredientCount)
+      .value();
     /* chain() together map(), flatten() and reduce() */
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+
+
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   /*********************************************************************************/
